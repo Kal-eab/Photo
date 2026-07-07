@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tsinuel Tesfay — Wedding & Portrait Photographer, Addis Ababa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16110c;
+    --ink-2:#1e1710;
+    --ink-3:#282016;
+    --paper:#f5efe6;
+    --faint:rgba(245,239,230,.55);
+    --ghost:rgba(245,239,230,.28);
+    --line:rgba(245,239,230,.14);
+    --amber:#e8a33d;
+    --amber-deep:#b5722a;
+    --booked:rgba(232,163,61,.12);
+    --radius:6px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Instrument Sans',system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--amber);color:var(--ink)}
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  button{font-family:inherit;cursor:pointer}
+  .mono{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  section{padding:96px 0}
+  .eyebrow{color:var(--amber);margin-bottom:14px;display:block}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:400;line-height:1.08}
+  h2{font-size:clamp(2rem,4.5vw,3.2rem);margin-bottom:18px;letter-spacing:-.01em}
+  .lede{color:var(--faint);max-width:56ch}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:2px}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:60;
+    background:linear-gradient(rgba(22,17,12,.92),rgba(22,17,12,.72) 70%,transparent);
+    backdrop-filter:blur(6px);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;max-width:1180px;margin:0 auto}
+  .brand{font-family:'Fraunces',serif;font-size:1.15rem;text-decoration:none;letter-spacing:.01em}
+  .brand em{font-style:normal;color:var(--amber)}
+  .nav-links{display:flex;gap:26px;align-items:center;list-style:none}
+  .nav-links a{text-decoration:none;font-size:.85rem;color:var(--faint);transition:color .2s}
+  .nav-links a:hover{color:var(--paper)}
+  .btn{
+    display:inline-block;background:var(--amber);color:var(--ink);border:none;
+    padding:11px 22px;border-radius:var(--radius);font-weight:600;font-size:.85rem;
+    text-decoration:none;transition:background .2s,transform .15s;
+  }
+  .btn:hover{background:#f0b458}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:transparent;color:var(--paper);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--amber);color:var(--amber);background:transparent}
+  .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--paper);padding:8px 12px;border-radius:var(--radius)}
+  @media(max-width:820px){
+    .nav-links{
+      display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;
+      background:var(--ink-2);padding:20px 24px;gap:16px;align-items:flex-start;border-bottom:1px solid var(--line);
+    }
+    .nav-links.open{display:flex}
+    .menu-btn{display:block}
+  }
+
+  /* ---------- hero ---------- */
+  header.hero{
+    min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
+    position:relative;overflow:hidden;
+  }
+  .hero-media{position:absolute;inset:0;z-index:-1}
+  .hero-media img{width:100%;height:100%;object-fit:cover;filter:saturate(.92)}
+  .hero-media::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(22,17,12,.35) 0%,rgba(22,17,12,.15) 40%,rgba(22,17,12,.94) 100%);
+  }
+  .hero-body{padding-bottom:56px}
+  .hero h1{font-size:clamp(2.6rem,7vw,5.4rem);max-width:13ch;font-weight:300}
+  .hero h1 strong{font-weight:500;color:var(--amber)}
+  .hero p{margin-top:20px;max-width:46ch;color:var(--faint)}
+  .hero-cta{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+  .exif{
+    border-top:1px solid var(--line);
+    display:flex;gap:28px;flex-wrap:wrap;padding:16px 0 22px;color:var(--ghost);
+  }
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- work ---------- */
+  .tabs{display:flex;gap:10px;flex-wrap:wrap;margin:34px 0 30px}
+  .tab{
+    background:transparent;border:1px solid var(--line);color:var(--faint);
+    padding:8px 18px;border-radius:999px;font-size:.82rem;transition:all .2s;
+  }
+  .tab:hover{color:var(--paper);border-color:var(--ghost)}
+  .tab.active{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+  .grid{columns:3;column-gap:18px}
+  @media(max-width:900px){.grid{columns:2}}
+  @media(max-width:560px){.grid{columns:1}}
+  .shot{break-inside:avoid;margin-bottom:18px;cursor:zoom-in;position:relative;border-radius:var(--radius);overflow:hidden;background:var(--ink-2)}
+  .shot img{width:100%;transition:transform .5s ease,opacity .4s;aspect-ratio:auto}
+  .shot:hover img{transform:scale(1.03)}
+  .shot figcaption{
+    position:absolute;left:0;right:0;bottom:0;padding:34px 14px 12px;
+    background:linear-gradient(transparent,rgba(22,17,12,.85));
+    color:var(--faint);opacity:0;transition:opacity .3s;
+  }
+  .shot:hover figcaption,.shot:focus-within figcaption{opacity:1}
+  .shot.hide{display:none}
+  .img-fallback{aspect-ratio:3/4;background:
+    radial-gradient(circle at 30% 20%,#3a2c1c,#1e1710 70%);
+    display:flex;align-items:center;justify-content:center;color:var(--ghost)}
+
+  /* lightbox */
+  .lightbox{
+    position:fixed;inset:0;background:rgba(12,9,6,.94);z-index:100;
+    display:none;align-items:center;justify-content:center;padding:32px;flex-direction:column;gap:16px;
+  }
+  .lightbox.open{display:flex}
+  .lightbox img{max-height:80vh;max-width:92vw;border-radius:var(--radius)}
+  .lightbox .cap{color:var(--faint)}
+  .lightbox .close{
+    position:absolute;top:22px;right:26px;background:none;border:1px solid var(--line);
+    color:var(--paper);border-radius:999px;width:42px;height:42px;font-size:1.05rem;
+  }
+
+  /* ---------- event galleries / QR ---------- */
+  .split{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+  @media(max-width:860px){.split{grid-template-columns:1fr;gap:40px}}
+  .steps{list-style:none;margin-top:28px;display:grid;gap:0}
+  .steps li{
+    display:flex;gap:18px;padding:18px 0;border-top:1px solid var(--line);
+  }
+  .steps li:last-child{border-bottom:1px solid var(--line)}
+  .steps .dot{
+    flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--amber);
+    color:var(--amber);display:flex;align-items:center;justify-content:center;
+    font-family:'Space Mono',monospace;font-size:.8rem;
+  }
+  .steps b{display:block;font-weight:600;margin-bottom:3px}
+  .steps span{color:var(--faint);font-size:.92rem}
+  .table-card{
+    background:var(--paper);color:var(--ink);border-radius:10px;padding:38px 34px;text-align:center;
+    max-width:340px;margin:0 auto;box-shadow:0 30px 60px rgba(0,0,0,.45);
+    transform:rotate(-1.5deg);
+  }
+  .table-card h3{font-size:1.5rem;margin-bottom:4px}
+  .table-card .date{font-size:.75rem;color:#7a6c58;letter-spacing:.12em;text-transform:uppercase}
+  .table-card .qr{width:170px;height:170px;margin:22px auto 14px;border-radius:8px;background:#fff;padding:10px}
+  .table-card .qr img{width:100%;height:100%}
+  .table-card small{color:#7a6c58;display:block;line-height:1.5}
+
+  .code-box{
+    margin-top:64px;border:1px solid var(--line);border-radius:12px;padding:34px;
+    background:var(--ink-2);
+  }
+  .code-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+  .code-row input{
+    background:var(--ink);border:1px solid var(--line);color:var(--paper);
+    padding:12px 16px;border-radius:var(--radius);font-family:'Space Mono',monospace;
+    letter-spacing:.12em;text-transform:uppercase;font-size:.9rem;flex:1;min-width:210px;
+  }
+  .code-row input::placeholder{color:var(--ghost);text-transform:none;letter-spacing:.02em;font-family:'Instrument Sans',sans-serif}
+  .demo-gallery{margin-top:28px;display:none}
+  .demo-gallery.open{display:block;animation:fade .5s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+  .dg-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  .dg-head h3{font-size:1.5rem}
+  .dg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media(max-width:640px){.dg-grid{grid-template-columns:repeat(2,1fr)}}
+  .dg-grid img{aspect-ratio:1;object-fit:cover;border-radius:4px;width:100%}
+  .pill{border:1px solid var(--line);border-radius:999px;padding:4px 12px;color:var(--faint);font-size:.72rem}
+  .err{color:#e07856;font-size:.85rem;margin-top:10px;display:none}
+
+  /* ---------- availability: contact sheet ---------- */
+  .sheet-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin:36px 0 8px}
+  .month-nav{display:flex;align-items:center;gap:14px}
+  .month-nav button{
+    background:none;border:1px solid var(--line);color:var(--paper);width:38px;height:38px;
+    border-radius:50%;font-size:1rem;transition:border-color .2s;
+  }
+  .month-nav button:hover:not(:disabled){border-color:var(--amber);color:var(--amber)}
+  .month-nav button:disabled{opacity:.3;cursor:default}
+  .month-name{font-family:'Fraunces',serif;font-size:1.5rem;min-width:200px}
+  .legend{display:flex;gap:20px;color:var(--faint);font-size:.8rem;align-items:center;flex-wrap:wrap}
+  .swatch{display:inline-block;width:13px;height:13px;border-radius:3px;margin-right:7px;vertical-align:-1px}
+  .swatch.free{border:1px solid var(--ghost)}
+  .swatch.busy{background:var(--booked);border:1px solid var(--amber-deep)}
+
+  .contact-sheet{
+    border:1px solid var(--line);border-radius:12px;padding:22px;background:var(--ink-2);
+    background-image:repeating-linear-gradient(90deg,transparent 0 6px,rgba(0,0,0,.14) 6px 7px);
+    margin-top:18px;
+  }
+  .dow{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:8px}
+  .dow span{text-align:center;color:var(--ghost)}
+  .days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+  .frame{
+    aspect-ratio:1/1.05;border:1px solid var(--line);border-radius:4px;position:relative;
+    background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+    transition:border-color .2s,background .2s;padding:4px;
+  }
+  .frame::before,.frame::after{ /* sprocket holes */
+    content:"";position:absolute;left:6px;right:6px;height:3px;
+    background:repeating-linear-gradient(90deg,var(--line) 0 5px,transparent 5px 12px);
+    border-radius:2px;opacity:.6;
+  }
+  .frame::before{top:4px}.frame::after{bottom:4px}
+  .frame .num{font-family:'Space Mono',monospace;font-size:.85rem}
+  .frame .tag{font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ghost)}
+  .frame.pad{visibility:hidden}
+  .frame.free{cursor:pointer;border-style:dashed}
+  .frame.free:hover{border-color:var(--amber);background:rgba(232,163,61,.06)}
+  .frame.free .tag{color:var(--faint)}
+  .frame.busy{background:var(--booked);border-color:var(--amber-deep)}
+  .frame.busy .num{color:var(--amber)}
+  .frame.busy .tag{color:var(--amber-deep)}
+  .frame.past{opacity:.28}
+  .frame.selected{border-color:var(--amber);border-style:solid;background:rgba(232,163,61,.14);box-shadow:0 0 0 1px var(--amber)}
+  @media(max-width:640px){
+    .frame .tag{display:none}
+    .contact-sheet{padding:14px}
+  }
+
+  /* booking panel */
+  .book-panel{
+    margin-top:26px;border:1px solid var(--line);border-radius:12px;padding:30px;
+    background:var(--ink-2);display:none;
+  }
+  .book-panel.open{display:block;animation:fade .4s ease}
+  .book-panel h3{font-size:1.35rem;margin-bottom:6px}
+  .book-sub{color:var(--faint);font-size:.9rem;margin-bottom:22px}
+  .slots{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+  .slot{
+    border:1px solid var(--line);background:var(--ink);color:var(--paper);
+    padding:10px 18px;border-radius:var(--radius);font-size:.85rem;transition:all .2s;
+  }
+  .slot:hover{border-color:var(--ghost)}
+  .slot.picked{background:var(--amber);color:var(--ink);border-color:var(--amber);font-weight:600}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+  @media(max-width:640px){.form-grid{grid-template-columns:1fr}}
+  .field label{display:block;font-size:.78rem;color:var(--faint);margin-bottom:6px}
+  .field input,.field select{
+    width:100%;background:var(--ink);border:1px solid var(--line);color:var(--paper);
+    padding:12px 14px;border-radius:var(--radius);font-size:.9rem;font-family:inherit;
+  }
+  .field select{appearance:none}
+  .confirm{
+    display:none;border:1px solid var(--amber-deep);background:rgba(232,163,61,.08);
+    border-radius:12px;padding:26px;margin-top:26px;
+  }
+  .confirm.open{display:block;animation:fade .4s ease}
+  .confirm h3{color:var(--amber);font-size:1.3rem;margin-bottom:8px}
+  .confirm p{color:var(--faint);font-size:.92rem}
+  .demo-note{margin-top:14px;color:var(--ghost);font-size:.75rem}
+
+  /* ---------- about ---------- */
+  .about{background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .about .split{align-items:start}
+  .about-photo{border-radius:10px;overflow:hidden;max-width:400px}
+  .about-photo img{width:100%;filter:saturate(.9)}
+  .facts{margin-top:26px;display:grid;gap:0}
+  .facts div{display:flex;justify-content:space-between;gap:20px;padding:13px 0;border-top:1px solid var(--line);font-size:.92rem}
+  .facts dt{color:var(--faint)}
+  .facts dd{text-align:right}
+  .contact-row{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap}
+
+  footer{padding:44px 0;color:var(--ghost);font-size:.85rem}
+  .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="#top">Tsinuel <em>Tesfay</em></a>
+    <button class="menu-btn mono" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#galleries">Event galleries</a></li>
+      <li><a href="#availability">Availability</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#availability" class="btn">Book a date</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-media">
+    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1800&auto=format&fit=crop" alt="Bride and groom at golden hour" onerror="this.parentElement.style.background='radial-gradient(circle at 40% 30%, #3a2c1c, #16110c 75%)';this.remove()">
+  </div>
+  <div class="wrap hero-body">
+    <span class="mono eyebrow">Addis Ababa · Weddings, portraits & events</span>
+    <h1>The day passes.<br>The <strong>photograph</strong> stays.</h1>
+    <p>Tsinuel Tesfay photographs weddings and people across Ethiopia — quietly, honestly, and in the light the moment actually happened in.</p>
+    <div class="hero-cta">
+      <a class="btn" href="#availability">Check my availability</a>
+      <a class="btn ghost" href="#work">See the work</a>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="exif mono">
+      <span>ƒ/1.8</span><span>85mm</span><span>1/200s</span><span>ISO 200</span><span>Entoto, Addis Ababa</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ WORK ============ -->
+<section id="work">
+  <div class="wrap">
+    <span class="mono eyebrow reveal">Selected work</span>
+    <h2 class="reveal">Thirty frames,<br>chosen slowly.</h2>
+    <p class="lede reveal">A small, edited selection — because the strongest portfolio is the one that leaves things out.</p>
+
+    <div class="tabs reveal" role="tablist" aria-label="Filter portfolio">
+      <button class="tab active" data-filter="all">All</button>
+      <button class="tab" data-filter="wedding">Weddings</button>
+      <button class="tab" data-filter="portrait">Portraits</button>
+      <button class="tab" data-filter="event">Events</button>
+    </div>
+
+    <div class="grid" id="workGrid"></div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="close" id="lbClose" aria-label="Close viewer">✕</button>
+  <img id="lbImg" src="" alt="">
+  <div class="cap mono" id="lbCap"></div>
+</div>
+
+<!-- ============ EVENT GALLERIES / QR ============ -->
+<section id="galleries" style="background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <span class="mono eyebrow reveal">Event galleries</span>
+        <h2 class="reveal">Every guest sees the photos.<br>Not just the couple.</h2>
+        <p class="lede reveal">Every wedding I shoot gets its own private online gallery. A QR code sits on the tables — guests scan it with their phone camera and the photos open right in their browser. No app, no sign-up, no waiting weeks.</p>
+        <ol class="steps reveal">
+          <li><span class="dot">1</span><div><b>Scan the code on your table</b><span>Your phone camera opens the gallery instantly.</span></div></li>
+          <li><span class="dot">2</span><div><b>Watch photos arrive during the night</b><span>Highlights are uploaded the same evening; the full set follows within days.</span></div></li>
+          <li><span class="dot">3</span><div><b>Save your favorites</b><span>Guests can view and download; the couple controls what is shown.</span></div></li>
+        </ol>
+      </div>
+      <div class="reveal">
+        <div class="table-card">
+          <div class="date">14 · 06 · 2026 — Sheraton Addis</div>
+          <h3>Abel &amp; Sara</h3>
+          <div class="qr">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=340x340&data=https%3A%2F%2Ftsinueltesfay.com%2Fg%2Fabel-sara" alt="QR code linking to the Abel and Sara wedding gallery" onerror="this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;background:repeating-conic-gradient(#16110c 0 25%,#fff 0 50%) 0 0/22px 22px;border-radius:6px&quot;></div>'">
+          </div>
+          <small>Scan to see tonight's photos<br><span style="letter-spacing:.14em">TSINUELTESFAY.COM/G/ABEL-SARA</span></small>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-box reveal">
+      <span class="mono eyebrow">Already a guest?</span>
+      <h3 style="font-size:1.4rem">Open your event gallery</h3>
+      <p style="color:var(--faint);font-size:.92rem;margin-top:6px">Enter the code printed on your invitation or table card. <span style="color:var(--ghost)">(Try the demo code: <b style="color:var(--amber)">ABEL-SARA</b>)</span></p>
+      <div class="code-row">
+        <input id="codeInput" placeholder="e.g. ABEL-SARA" aria-label="Gallery code">
+        <button class="btn" id="codeBtn">Open gallery</button>
+      </div>
+      <p class="err" id="codeErr">That code wasn't found. Check the spelling on your card, or ask the couple.</p>
+
+      <div class="demo-gallery" id="demoGallery">
+        <div class="dg-head">
+          <h3>Abel &amp; Sara — 14 June 2026</h3>
+          <div style="display:flex;gap:8px">
+            <span class="pill">Private</span><span class="pill">142 photos</span><span class="pill">Uploading tonight</span>
+          </div>
+        </div>
+        <div class="dg-grid" id="dgGrid"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AVAILABILITY ============ -->
+<section id="availability">
+  <div class="wrap">
+    <span class="mono eyebrow reveal">Availability</span>
+    <h2 class="reveal">The contact sheet.</h2>
+    <p class="lede reveal">Every date is a frame. The exposed frames are already someone's wedding — the empty ones are still yours. Pick an open frame to request it.</p>
+
+    <div class="sheet-top reveal">
+      <div class="month-nav">
+        <button id="prevM" aria-label="Previous month">←</button>
+        <div class="month-name" id="monthName"></div>
+        <button id="nextM" aria-label="Next month">→</button>
+      </div>
+      <div class="legend mono">
+        <span><span class="swatch free"></span>Open</span>
+        <span><span class="swatch busy"></span>Booked</span>
+      </div>
+    </div>
+
+    <div class="contact-sheet reveal">
+      <div class="dow mono">
+        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+      </div>
+      <div class="days" id="daysGrid"></div>
+    </div>
+
+    <div class="book-panel" id="bookPanel">
+      <h3 id="bookTitle">Request this date</h3>
+      <p class="book-sub" id="bookSub"></p>
+      <div class="mono" style="color:var(--faint);margin-bottom:10px;font-size:.7rem">Choose a session</div>
+      <div class="slots" id="slots">
+        <button class="slot" data-slot="Morning · 8:00–12:00">Morning · 8:00–12:00</button>
+        <button class="slot" data-slot="Afternoon · 13:00–18:00">Afternoon · 13:00–18:00</button>
+        <button class="slot" data-slot="Full day">Full day</button>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label for="fName">Your name</label><input id="fName" placeholder="Hanna Tesfaye"></div>
+        <div class="field"><label for="fPhone">Phone / WhatsApp</label><input id="fPhone" placeholder="+251 9…"></div>
+        <div class="field"><label for="fType">Type of shoot</label>
+          <select id="fType">
+            <option>Wedding</option><option>Engagement / Telosh</option><option>Portrait session</option><option>Graduation</option><option>Corporate / event</option>
+          </select>
+        </div>
+        <div class="field"><label for="fVenue">Venue or city</label><input id="fVenue" placeholder="Addis Ababa"></div>
+      </div>
+      <button class="btn" id="sendReq">Send booking request</button>
+      <p class="demo-note">Demo mode — in the live site this sends the request to Tsinuel's WhatsApp and email, and holds the frame as “pending”.</p>
+    </div>
+
+    <div class="confirm" id="confirmBox">
+      <h3>Request sent ✓</h3>
+      <p id="confirmText"></p>
+      <p style="margin-top:8px;color:var(--ghost);font-size:.82rem">Tsinuel replies within 24 hours on WhatsApp to confirm and hold your date.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <span class="mono eyebrow reveal">About</span>
+        <h2 class="reveal">Behind the camera.</h2>
+        <p class="lede reveal">I've photographed more than 120 weddings across Addis Ababa, Adama, Bahir Dar and Hawassa. I work quietly — the best pictures happen when people forget I'm there. Every couple gets a same-night highlight gallery their guests can open from the QR code on their table, and the full edited set within ten days.</p>
+        <dl class="facts reveal">
+          <div><dt>Based in</dt><dd>Addis Ababa · travels anywhere in Ethiopia</dd></div>
+          <div><dt>Weddings, full day</dt><dd>from 35,000 ETB</dd></div>
+          <div><dt>Portrait sessions</dt><dd>from 6,000 ETB</dd></div>
+          <div><dt>Delivery</dt><dd>Same-night highlights · full gallery in 10 days</dd></div>
+          <div><dt>Languages</dt><dd>Amharic · English</dd></div>
+        </dl>
+        <div class="contact-row reveal">
+          <a class="btn" href="https://wa.me/251900000000" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn ghost" href="https://t.me/tsinuelshoots" target="_blank" rel="noopener">Telegram</a>
+          <a class="btn ghost" href="https://instagram.com/tsinuelshoots" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+      <div class="about-photo reveal">
+        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=900&auto=format&fit=crop" alt="Portrait of the photographer" onerror="this.outerHTML='<div class=&quot;img-fallback&quot;>Portrait</div>'">
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <span>© 2026 Tsinuel Tesfay Photography · Addis Ababa</span>
+    <span class="mono">ƒ/1.8 and available light</span>
+  </div>
+</footer>
+
+<script>
+/* ---------------- data ---------------- */
+const U = id => `https://images.unsplash.com/${id}?q=80&w=900&auto=format&fit=crop`;
+const shots = [
+  {id:"photo-1583939003579-730e3918a45a", cat:"wedding",  cap:"ƒ/2.0 · 50mm · Sheraton Addis"},
+  {id:"photo-1529626455594-4ff0802cfb7e", cat:"portrait", cap:"ƒ/1.8 · 85mm · natural light"},
+  {id:"photo-1511285560929-80b456fea0bc", cat:"wedding",  cap:"ƒ/2.8 · 35mm · the rings"},
+  {id:"photo-1492684223066-81342ee5ff30", cat:"event",    cap:"ƒ/2.0 · 35mm · sparkler exit"},
+  {id:"photo-1508214751196-bcfd4ca60f91", cat:"portrait", cap:"ƒ/1.4 · 85mm · studio"},
+  {id:"photo-1465495976277-4387d4b0b4c6", cat:"wedding",  cap:"ƒ/2.8 · 24mm · Entoto hills"},
+  {id:"photo-1544005313-94ddf0286df2",    cat:"portrait", cap:"ƒ/1.8 · 85mm · window light"},
+  {id:"photo-1519225421980-715cb0215aed", cat:"wedding",  cap:"ƒ/4.0 · 35mm · the table"},
+  {id:"photo-1470229722913-7c0e2dbbafd3", cat:"event",    cap:"ƒ/2.0 · 24mm · stage light"},
+  {id:"photo-1507003211169-0a1dd7228f2d", cat:"portrait", cap:"ƒ/2.0 · 50mm · golden hour"},
+  {id:"photo-1522673607200-164d1b6ce486", cat:"wedding",  cap:"ƒ/2.8 · 50mm · first look"},
+  {id:"photo-1511578314322-379afb476865", cat:"event",    cap:"ƒ/2.8 · 35mm · the reception"},
+];
+
+const grid = document.getElementById('workGrid');
+shots.forEach((s,i)=>{
+  const f=document.createElement('figure');
+  f.className='shot reveal'; f.dataset.cat=s.cat;
+  f.innerHTML=`<img src="${U(s.id)}" alt="${s.cat} photograph" loading="lazy"
+     onerror="this.outerHTML='<div class=&quot;img-fallback&quot;>${s.cat}</div>'">
+     <figcaption class="mono">${s.cap}</figcaption>`;
+  f.tabIndex=0;
+  f.addEventListener('click',()=>openLB(U(s.id).replace('w=900','w=1600'),s.cap));
+  f.addEventListener('keydown',e=>{if(e.key==='Enter')openLB(U(s.id).replace('w=900','w=1600'),s.cap)});
+  grid.appendChild(f);
+});
+
+/* tabs */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    const f=t.dataset.filter;
+    document.querySelectorAll('.shot').forEach(s=>{
+      s.classList.toggle('hide', f!=='all' && s.dataset.cat!==f);
+    });
+  });
+});
+
+/* lightbox */
+const lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg'), lbCap=document.getElementById('lbCap');
+function openLB(src,cap){ lbImg.src=src; lbCap.textContent=cap; lb.classList.add('open'); }
+document.getElementById('lbClose').addEventListener('click',()=>lb.classList.remove('open'));
+lb.addEventListener('click',e=>{ if(e.target===lb) lb.classList.remove('open'); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') lb.classList.remove('open'); });
+
+/* ---------------- gallery code demo ---------------- */
+const dgIds=["photo-1583939003579-730e3918a45a","photo-1519741497674-611481863552","photo-1511285560929-80b456fea0bc","photo-1465495976277-4387d4b0b4c6","photo-1519225421980-715cb0215aed","photo-1492684223066-81342ee5ff30","photo-1522673607200-164d1b6ce486","photo-1511578314322-379afb476865"];
+const dgGrid=document.getElementById('dgGrid');
+dgIds.forEach(id=>{
+  const img=document.createElement('img');
+  img.src=U(id); img.alt="Wedding gallery photo"; img.loading="lazy";
+  img.onerror=function(){ this.outerHTML='<div class="img-fallback" style="aspect-ratio:1"></div>'; };
+  dgGrid.appendChild(img);
+});
+function tryCode(){
+  const v=document.getElementById('codeInput').value.trim().toUpperCase();
+  const ok = v==='ABEL-SARA' || v==='ABELSARA' || v==='ABEL SARA';
+  document.getElementById('demoGallery').classList.toggle('open', ok);
+  document.getElementById('codeErr').style.display = (!ok && v) ? 'block' : 'none';
+  if(ok) document.getElementById('demoGallery').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+document.getElementById('codeBtn').addEventListener('click',tryCode);
+document.getElementById('codeInput').addEventListener('keydown',e=>{ if(e.key==='Enter') tryCode(); });
+
+/* ---------------- availability contact sheet ---------------- */
+const today=new Date(); today.setHours(0,0,0,0);
+let viewY=today.getFullYear(), viewM=today.getMonth();
+const monthName=document.getElementById('monthName');
+const daysGrid=document.getElementById('daysGrid');
+const bookPanel=document.getElementById('bookPanel');
+const confirmBox=document.getElementById('confirmBox');
+let selectedDate=null, selectedSlot=null;
+const requested=new Set(); // dates the visitor already requested (demo)
+
+/* deterministic "booked" days so the sheet looks real (weekends more likely) */
+function isBooked(y,m,d){
+  const dt=new Date(y,m,d), dow=dt.getDay();
+  const seed=(y*372+m*31+d)*2654435761 % 97;
+  if(dow===6) return seed%3!==0;          // most Saturdays booked
+  if(dow===0) return seed%2===0;          // half of Sundays
+  return seed%9===0;                       // occasional weekday
+}
+const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+function render(){
+  monthName.textContent=`${MONTHS[viewM]} ${viewY}`;
+  daysGrid.innerHTML='';
+  const first=new Date(viewY,viewM,1);
+  const pad=(first.getDay()+6)%7;                 // Monday-first
+  const total=new Date(viewY,viewM+1,0).getDate();
+  for(let i=0;i<pad;i++){ const p=document.createElement('div'); p.className='frame pad'; daysGrid.appendChild(p); }
+  for(let d=1;d<=total;d++){
+    const dt=new Date(viewY,viewM,d);
+    const el=document.createElement('div');
+    el.className='frame';
+    const past = dt<today;
+    const key=`${viewY}-${viewM}-${d}`;
+    const booked=isBooked(viewY,viewM,d)||requested.has(key);
+    el.classList.add(booked?'busy':'free');
+    if(past) el.classList.add('past');
+    el.innerHTML=`<span class="num">${String(d).padStart(2,'0')}</span><span class="tag">${booked?(requested.has(key)?'Pending':'Booked'):'Open'}</span>`;
+    if(!past && !booked){
+      el.tabIndex=0; el.setAttribute('role','button');
+      el.setAttribute('aria-label',`Request ${MONTHS[viewM]} ${d}, ${viewY}`);
+      const pick=()=>selectDate(dt,el);
+      el.addEventListener('click',pick);
+      el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();} });
+    }
+    daysGrid.appendChild(el);
+  }
+  /* limit navigation: current month → +11 months */
+  const minM=today.getFullYear()*12+today.getMonth(), cur=viewY*12+viewM;
+  document.getElementById('prevM').disabled = cur<=minM;
+  document.getElementById('nextM').disabled = cur>=minM+11;
+}
+function selectDate(dt,el){
+  document.querySelectorAll('.frame.selected').forEach(f=>f.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDate=dt; selectedSlot=null;
+  document.querySelectorAll('.slot').forEach(s=>s.classList.remove('picked'));
+  confirmBox.classList.remove('open');
+  bookPanel.classList.add('open');
+  const nice=dt.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('bookTitle').textContent=`Request ${nice}`;
+  document.getElementById('bookSub').textContent='This frame is still open. Send a request and Tsinuel will confirm it personally.';
+  bookPanel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+document.getElementById('prevM').addEventListener('click',()=>{ viewM--; if(viewM<0){viewM=11;viewY--;} bookPanel.classList.remove('open'); render(); });
+document.getElementById('nextM').addEventListener('click',()=>{ viewM++; if(viewM>11){viewM=0;viewY++;} bookPanel.classList.remove('open'); render(); });
+
+document.querySelectorAll('.slot').forEach(s=>{
+  s.addEventListener('click',()=>{
+    document.querySelectorAll('.slot').forEach(x=>x.classList.remove('picked'));
+    s.classList.add('picked'); selectedSlot=s.dataset.slot;
+  });
+});
+document.getElementById('sendReq').addEventListener('click',()=>{
+  const name=document.getElementById('fName').value.trim();
+  const phone=document.getElementById('fPhone').value.trim();
+  if(!selectedDate){ alert('Pick an open date on the contact sheet first.'); return; }
+  if(!selectedSlot){ alert('Choose a session (morning, afternoon or full day).'); return; }
+  if(!name||!phone){ alert('Add your name and phone number so Tsinuel can reach you.'); return; }
+  const key=`${selectedDate.getFullYear()}-${selectedDate.getMonth()}-${selectedDate.getDate()}`;
+  requested.add(key);
+  const nice=selectedDate.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('confirmText').textContent=
+    `${name}, your request for ${nice} (${selectedSlot}) is in. The frame is now marked pending on the sheet.`;
+  bookPanel.classList.remove('open');
+  confirmBox.classList.add('open');
+  render();
+  confirmBox.scrollIntoView({behavior:'smooth',block:'nearest'});
+});
+render();
+
+/* ---------------- misc ---------------- */
+const menuBtn=document.getElementById('menuBtn'), navLinks=document.getElementById('navLinks');
+menuBtn.addEventListener('click',()=>{
+  const open=navLinks.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded',open);
+});
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
+
+/* scroll reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);} }),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+}
+</script>
+</body>
+</html>
