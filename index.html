@@ -285,6 +285,53 @@
 
   footer{padding:44px 0;color:var(--ghost);font-size:.85rem}
   .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center}
+
+  /* ---------- gallery dropdown ---------- */
+  .dd{position:relative}
+  .dd-btn{
+    background:none;border:none;color:var(--faint);font-size:.85rem;font-family:inherit;
+    display:flex;align-items:center;gap:7px;padding:0;transition:color .2s;
+  }
+  .dd-btn:hover{color:var(--paper)}
+  .dd-btn .car{font-size:.55rem;color:var(--amber);transition:transform .2s}
+  .dd.open .car{transform:rotate(180deg)}
+  .dd-menu{
+    position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);
+    background:var(--ink-2);border:1px solid var(--line);border-radius:10px;
+    list-style:none;min-width:210px;padding:10px 0;display:none;
+    max-height:min(72vh,560px);overflow:auto;box-shadow:0 24px 50px rgba(0,0,0,.55);
+  }
+  .dd.open .dd-menu{display:block}
+  .dd-menu a{display:block;padding:10px 22px;text-decoration:none;color:var(--paper);font-weight:600;font-size:.9rem;transition:color .15s,background .15s}
+  .dd-menu a:hover{color:var(--amber);background:rgba(232,163,61,.06)}
+  .dd-menu .dd-label{padding:6px 22px 10px;color:var(--ghost)}
+  @media(max-width:820px){
+    .dd{width:100%}
+    .dd-menu{position:static;transform:none;border:none;box-shadow:none;background:transparent;
+      padding:6px 0 2px 16px;min-width:0;max-height:none;border-left:1px solid var(--line);border-radius:0}
+    .dd-menu a{padding:7px 0}
+  }
+
+  /* ---------- category gallery pages ---------- */
+  .cat-page{display:none;padding:132px 0 90px;min-height:100vh}
+  body.cat-open .cat-page{display:block;animation:fade .4s ease}
+  body.cat-open header.hero,body.cat-open section,body.cat-open footer.site{display:none}
+  .back-link{
+    display:inline-flex;align-items:center;gap:8px;color:var(--faint);text-decoration:none;
+    font-size:.85rem;margin-bottom:26px;transition:color .2s;
+  }
+  .back-link:hover{color:var(--amber)}
+  .cat-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:12px}
+  .cat-head h2{margin-bottom:6px}
+  .cat-desc{color:var(--faint);max-width:60ch;margin-bottom:34px}
+  .more-progs{margin-top:64px;border-top:1px solid var(--line);padding-top:30px}
+  .prog-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .prog-chips a{
+    text-decoration:none;border:1px solid var(--line);color:var(--faint);
+    padding:8px 18px;border-radius:999px;font-size:.82rem;transition:all .2s;
+  }
+  .prog-chips a:hover{color:var(--amber);border-color:var(--amber)}
+  .prog-chips a.here{background:var(--paper);color:var(--ink);border-color:var(--paper)}
 </style>
 </head>
 <body>
@@ -295,6 +342,13 @@
     <button class="menu-btn mono" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
     <ul class="nav-links" id="navLinks">
       <li><a href="#work">Work</a></li>
+      <li class="dd" id="galleryDD">
+        <button class="dd-btn" id="ddBtn" aria-expanded="false" aria-haspopup="true">Gallery <span class="car">▼</span></button>
+        <ul class="dd-menu" id="ddMenu">
+          <li class="dd-label mono">Programs</li>
+          <!-- populated by JS -->
+        </ul>
+      </li>
       <li><a href="#galleries">Event galleries</a></li>
       <li><a href="#availability">Availability</a></li>
       <li><a href="#about">About</a></li>
@@ -305,7 +359,7 @@
 
 <header class="hero" id="top">
   <div class="hero-media">
-    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1800&auto=format&fit=crop" alt="Bride and groom at golden hour" onerror="this.parentElement.style.background='radial-gradient(circle at 40% 30%, #3a2c1c, #16110c 75%)';this.remove()">
+    <img src="https://images.pexels.com/photos/28645141/pexels-photo-28645141.jpeg?auto=compress&cs=tinysrgb&w=1800" alt="Ethiopian candlelit ceremony procession at night" onerror="this.parentElement.style.background='radial-gradient(circle at 40% 30%, #3a2c1c, #16110c 75%)';this.remove()">
   </div>
   <div class="wrap hero-body">
     <span class="mono eyebrow">Addis Ababa · Weddings, portraits & events</span>
@@ -322,6 +376,26 @@
     </div>
   </div>
 </header>
+
+<!-- ============ CATEGORY GALLERY PAGE ============ -->
+<div class="cat-page" id="catPage">
+  <div class="wrap">
+    <a class="back-link" href="#top" id="catBack">← Back to home</a>
+    <div class="cat-head">
+      <div>
+        <span class="mono eyebrow" id="catEyebrow">Gallery</span>
+        <h2 id="catTitle"></h2>
+      </div>
+      <span class="pill" id="catCount"></span>
+    </div>
+    <p class="cat-desc" id="catDesc"></p>
+    <div class="grid" id="catGrid"></div>
+    <div class="more-progs">
+      <span class="mono eyebrow">More programs</span>
+      <div class="prog-chips" id="progChips"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ============ WORK ============ -->
 <section id="work">
@@ -475,13 +549,13 @@
         </div>
       </div>
       <div class="about-photo reveal">
-        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=900&auto=format&fit=crop" alt="Portrait of the photographer" onerror="this.outerHTML='<div class=&quot;img-fallback&quot;>Portrait</div>'">
+        <img src="https://images.pexels.com/photos/28645138/pexels-photo-28645138.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Portrait of the photographer" onerror="this.outerHTML='<div class=&quot;img-fallback&quot;>Portrait</div>'">
       </div>
     </div>
   </div>
 </section>
 
-<footer>
+<footer class="site">
   <div class="wrap foot-in">
     <span>© 2026 Tsinuel Tesfay Photography · Addis Ababa</span>
     <span class="mono">ƒ/1.8 and available light</span>
@@ -490,20 +564,20 @@
 
 <script>
 /* ---------------- data ---------------- */
-const U = id => `https://images.unsplash.com/${id}?q=80&w=900&auto=format&fit=crop`;
+const U = id => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=900`;
 const shots = [
-  {id:"photo-1583939003579-730e3918a45a", cat:"wedding",  cap:"ƒ/2.0 · 50mm · Sheraton Addis"},
-  {id:"photo-1529626455594-4ff0802cfb7e", cat:"portrait", cap:"ƒ/1.8 · 85mm · natural light"},
-  {id:"photo-1511285560929-80b456fea0bc", cat:"wedding",  cap:"ƒ/2.8 · 35mm · the rings"},
-  {id:"photo-1492684223066-81342ee5ff30", cat:"event",    cap:"ƒ/2.0 · 35mm · sparkler exit"},
-  {id:"photo-1508214751196-bcfd4ca60f91", cat:"portrait", cap:"ƒ/1.4 · 85mm · studio"},
-  {id:"photo-1465495976277-4387d4b0b4c6", cat:"wedding",  cap:"ƒ/2.8 · 24mm · Entoto hills"},
-  {id:"photo-1544005313-94ddf0286df2",    cat:"portrait", cap:"ƒ/1.8 · 85mm · window light"},
-  {id:"photo-1519225421980-715cb0215aed", cat:"wedding",  cap:"ƒ/4.0 · 35mm · the table"},
-  {id:"photo-1470229722913-7c0e2dbbafd3", cat:"event",    cap:"ƒ/2.0 · 24mm · stage light"},
-  {id:"photo-1507003211169-0a1dd7228f2d", cat:"portrait", cap:"ƒ/2.0 · 50mm · golden hour"},
-  {id:"photo-1522673607200-164d1b6ce486", cat:"wedding",  cap:"ƒ/2.8 · 50mm · first look"},
-  {id:"photo-1511578314322-379afb476865", cat:"event",    cap:"ƒ/2.8 · 35mm · the reception"},
+  {id:"28664273", cat:"wedding",  cap:"ƒ/2.8 · 35mm · procession under the umbrellas"},
+  {id:"37733601", cat:"portrait", cap:"ƒ/1.8 · 85mm · habesha kemis, natural light"},
+  {id:"28645141", cat:"wedding",  cap:"ƒ/1.8 · 35mm · by candlelight"},
+  {id:"20865955", cat:"event",    cap:"ƒ/2.8 · 24mm · Meskel, Addis Ababa"},
+  {id:"18402554", cat:"portrait", cap:"ƒ/1.4 · 85mm · beaded crown"},
+  {id:"20879646", cat:"wedding",  cap:"ƒ/2.8 · 24mm · the canopy"},
+  {id:"18158250", cat:"portrait", cap:"ƒ/1.8 · 85mm · in white, outdoors"},
+  {id:"28645136", cat:"wedding",  cap:"ƒ/2.0 · 50mm · the blessing"},
+  {id:"15227915", cat:"event",    cap:"ƒ/2.0 · 24mm · the drums"},
+  {id:"17307322", cat:"portrait", cap:"ƒ/2.0 · 50mm · Addis Ababa"},
+  {id:"30308335", cat:"wedding",  cap:"ƒ/2.8 · 50mm · the procession"},
+  {id:"20865973", cat:"event",    cap:"ƒ/2.8 · 35mm · the celebration"},
 ];
 
 const grid = document.getElementById('workGrid');
@@ -539,7 +613,7 @@ lb.addEventListener('click',e=>{ if(e.target===lb) lb.classList.remove('open'); 
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') lb.classList.remove('open'); });
 
 /* ---------------- gallery code demo ---------------- */
-const dgIds=["photo-1583939003579-730e3918a45a","photo-1519741497674-611481863552","photo-1511285560929-80b456fea0bc","photo-1465495976277-4387d4b0b4c6","photo-1519225421980-715cb0215aed","photo-1492684223066-81342ee5ff30","photo-1522673607200-164d1b6ce486","photo-1511578314322-379afb476865"];
+const dgIds=["28664273","28645141","20879646","18158250","28645136","15227915","30308335","20865973"];
 const dgGrid=document.getElementById('dgGrid');
 dgIds.forEach(id=>{
   const img=document.createElement('img');
@@ -646,6 +720,99 @@ document.getElementById('sendReq').addEventListener('click',()=>{
   confirmBox.scrollIntoView({behavior:'smooth',block:'nearest'});
 });
 render();
+
+/* ---------------- program galleries (Gallery dropdown) ---------------- */
+const PROGRAMS = [
+  {slug:"mels",         name:"Mels",          desc:"The day after the wedding — the couple returns in traditional kaba for the Mels celebration with the bride's family.",
+    imgs:["20865973","15227915","20865976","20879646","20865956"]},
+  {slug:"genfo",        name:"Genfo",         desc:"Welcoming a newborn — the genfo ceremony, shared with mothers, family and neighbours.",
+    imgs:["37733601","38372724","18053874","38372725"]},
+  {slug:"enshoshula",   name:"Enshoshula",    desc:"The Enshoshula celebration — songs, family and tradition around the bride.",
+    imgs:["20865956","18053874","18158250","19976711"]},
+  {slug:"tifer-korta",  name:"Tifer Korta",   desc:"The Tifer Korta ceremony — the groom's traditional preparation, surrounded by his closest people.",
+    imgs:["25849069","28645138","20865976","15228011"]},
+  {slug:"ero",          name:"Ero",           desc:"The Ero ceremony, photographed quietly from inside the celebration.",
+    imgs:["28645138","15228011","20865955","25849069"]},
+  {slug:"kusla",        name:"Kusla",         desc:"Kusla celebration with family and friends — tradition, food and joy.",
+    imgs:["17272172","15227913","15227915","20865973"]},
+  {slug:"teklil",       name:"Teklil",        desc:"The church crowning ceremony — the most sacred hours of an Ethiopian Orthodox wedding, photographed with respect.",
+    imgs:["28645141","17677015","28645136","28664273","30308335"]},
+  {slug:"bridal-shower",name:"Bridal Shower", desc:"Celebrating the bride with her closest friends before the big day.",
+    imgs:["18158250","18402554","18053874","20865956"]},
+  {slug:"landscape",    name:"Landscape",     desc:"Ethiopia's light and land — the frames between the weddings.",
+    imgs:["33337903","12264001","37006569","36713810","27534668","12344991","6742951","9500593"]},
+  {slug:"wedding",      name:"Wedding",       desc:"Full wedding-day coverage, from the first preparations to the last dance.",
+    imgs:["28664273","20879646","28645141","18158250","28645136","30308335"]},
+  {slug:"maternity",    name:"Maternity",     desc:"The waiting months, photographed gently — at home or in the open air.",
+    imgs:["37733601","18053874","18158250","38372725"]},
+  {slug:"kirisitna",    name:"Kirisitna",     desc:"Christening day — a child's first ceremony, and a family's proudest morning.",
+    imgs:["28645136","28645141","28664273","17677015"]},
+  {slug:"kids",         name:"Kids",          desc:"Children, photographed at their own speed.",
+    imgs:["18110622","37733601","18053874"]},
+  {slug:"family",       name:"Family",        desc:"Family portraits at home, in the studio or on location.",
+    imgs:["38372725","38372724","19730924","37733601","18110622"]},
+  {slug:"modeling",     name:"Modeling",      desc:"Portfolio and editorial work for models and creatives.",
+    imgs:["19976711","17307322","18402554","18158250"]},
+];
+
+/* build dropdown + chips */
+const ddMenu=document.getElementById('ddMenu');
+const progChips=document.getElementById('progChips');
+PROGRAMS.forEach(p=>{
+  const li=document.createElement('li');
+  li.innerHTML=`<a href="#cat/${p.slug}">${p.name}</a>`;
+  ddMenu.appendChild(li);
+  const chip=document.createElement('a');
+  chip.href=`#cat/${p.slug}`; chip.textContent=p.name; chip.dataset.slug=p.slug;
+  progChips.appendChild(chip);
+});
+
+/* dropdown open/close */
+const dd=document.getElementById('galleryDD'), ddBtn=document.getElementById('ddBtn');
+ddBtn.addEventListener('click',e=>{
+  e.stopPropagation();
+  const open=dd.classList.toggle('open');
+  ddBtn.setAttribute('aria-expanded',open);
+});
+document.addEventListener('click',e=>{ if(!dd.contains(e.target)) dd.classList.remove('open'); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') dd.classList.remove('open'); });
+
+/* hash routing: #cat/<slug> opens a program gallery */
+const catGrid=document.getElementById('catGrid');
+function openCategory(slug){
+  const i=PROGRAMS.findIndex(p=>p.slug===slug);
+  if(i===-1){ closeCategory(); return; }
+  const p=PROGRAMS[i];
+  document.getElementById('catTitle').textContent=p.name;
+  document.getElementById('catDesc').textContent=p.desc;
+  const imgs=p.imgs;
+  document.getElementById('catCount').textContent=`${imgs.length} photos`;
+  catGrid.innerHTML='';
+  imgs.forEach(id=>{
+    const f=document.createElement('figure');
+    f.className='shot'; f.tabIndex=0;
+    f.innerHTML=`<img src="${U(id)}" alt="${p.name} photograph" loading="lazy"
+      onerror="this.outerHTML='<div class=&quot;img-fallback&quot;>${p.name}</div>'">
+      <figcaption class="mono">${p.name} · Tsinuel Tesfay</figcaption>`;
+    const open=()=>openLB(U(id).replace('w=900','w=1600'),`${p.name} · Tsinuel Tesfay`);
+    f.addEventListener('click',open);
+    f.addEventListener('keydown',e=>{ if(e.key==='Enter') open(); });
+    catGrid.appendChild(f);
+  });
+  progChips.querySelectorAll('a').forEach(a=>a.classList.toggle('here',a.dataset.slug===slug));
+  document.body.classList.add('cat-open');
+  dd.classList.remove('open');
+  document.getElementById('navLinks').classList.remove('open');
+  window.scrollTo({top:0,behavior:'auto'});
+}
+function closeCategory(){ document.body.classList.remove('cat-open'); }
+function route(){
+  const h=location.hash;
+  if(h.startsWith('#cat/')) openCategory(h.slice(5));
+  else closeCategory();
+}
+window.addEventListener('hashchange',route);
+route();
 
 /* ---------------- misc ---------------- */
 const menuBtn=document.getElementById('menuBtn'), navLinks=document.getElementById('navLinks');
